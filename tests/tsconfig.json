@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "alwaysStrict": true,
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "target": "es5",
+        "outFile": "./tests/karma.conf.tests.js"
+    },
+    "files": [
+        "../dist/tuna-jslinq.d.ts"
+    ],
+    "include": [
+        "./**/*.ts"
+    ]
+}

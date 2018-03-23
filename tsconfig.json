@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "strict": true,
+        "target": "es5",
+        "outFile": "./dist/tuna-jslinq.js",
+        "declaration": true
+    },
+    "files": [
+        "./src/JSLinqHelper.ts",
+        "./src/JSLinqOrderEntry.ts",
+        "./src/JSLinq.ts"
+    ],
+    "include": [
+        "./src/**/*"
+    ]
+}

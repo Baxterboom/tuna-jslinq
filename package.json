@@ -1,0 +1,41 @@
+{
+  "name": "tuna-jslinq",
+  "version": "1.0.0",
+  "description": "Linq methods for JavaScript/TypeScript for working with Arrays",
+  "main": "dist/Tuna-JSLinq.js",
+  "typings": "dist/Tuna-JSLinq.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Baxterboom/Tuna-JSLinq.git"
+  },
+  "keywords": [
+    "Linq",
+    ".NET",
+    "TypeScript",
+    "JavaScript",
+    "Array",
+    "Sorting"
+  ],
+  "author": {
+    "name": "Baxterboom"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Baxterboom/Tuna-JSLinq/issues"
+  },
+  "homepage": "https://github.com/Baxterboom/Tuna-JSLinq",
+  "devDependencies": {
+    "@types/jasmine": "2.8.6",
+    "gulp": "3.9.1",
+    "gulp-debug": "3.2.0",
+    "gulp-jasmine": "3.0.0",
+    "gulp-typescript": "4.0.1",
+    "jasmine": "3.1.0",
+    "karma": "2.0.0",
+    "karma-chrome-launcher": "2.2.0",
+    "karma-detect-browsers": "2.3.1",
+    "karma-firefox-launcher": "1.1.0",
+    "karma-jasmine": "1.1.1",
+    "typescript": "2.7.2"
+  }
+}
