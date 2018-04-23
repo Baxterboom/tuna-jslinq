@@ -107,6 +107,9 @@ var JSLinqOrderEntryDirection;
     JSLinqOrderEntryDirection[JSLinqOrderEntryDirection["Descending"] = 1] = "Descending";
 })(JSLinqOrderEntryDirection || (JSLinqOrderEntryDirection = {}));
 var JSLinq = function (array) {
+    if (array && !Array.isArray(array)) {
+        array = [array];
+    }
     return array || [];
 };
 JSLinqHelper.NonEnumerable(Array.prototype, "_JSLinq", {

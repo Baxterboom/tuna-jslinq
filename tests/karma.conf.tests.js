@@ -344,6 +344,21 @@ describe("Join", function () {
         expect(Users.Join("#", function (i) { return i.Id; })).toBe("1#2#3#4#5#6#7#8#9#10#11#12#13#14#15#16");
     });
 });
+describe("JSLinq", function () {
+    it("should return empty array", function () {
+        expect(JSLinq()).toEqual([]);
+        expect(JSLinq(null)).toEqual([]);
+        expect(JSLinq(undefined)).toEqual([]);
+    });
+    it("should return array", function () {
+        expect(JSLinq(1)).toEqual([1]);
+        expect(JSLinq("2")).toEqual(["2"]);
+    });
+    it("should return array", function () {
+        var array = [1, 3, 4];
+        expect(JSLinq(array)).toBe(array);
+    });
+});
 describe("Last", function () {
     it("match", function () {
         expect(Users.Last().Id).toBe(16);
