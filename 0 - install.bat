@@ -3,8 +3,8 @@
 cls
 @echo off
 @echo ========================================================================================================
-@echo             Setting up Visma.Absence.Presentation.Kalendarie, this might take awhile.
-@echo  (if npm is not found, make sure you install nodejs: https://nodejs.org/dist/v8.9.4/node-v8.9.4-x64.msi) 
+@echo             Setting up the project, this might take awhile.
+@echo  (if npm is not found, make sure you install nodejs: https://nodejs.org) 
 @echo =========================================================================================================
 
 REM # clean compontents folder
