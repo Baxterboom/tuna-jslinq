@@ -31,7 +31,7 @@ subs - tests
 */
 
 gulp.task("run:karma-tests", ["compile:ts", "compile:tests"], function (done) {
-	gulp.watch(path.src + "/**/*.ts", ["bundle:js", "compile:tests"]);
+	gulp.watch([path.src + "/**/*.ts", path.tests + "/**/*.ts"], ["compile:ts", "compile:tests"]);
 	return new karma.Server({
 		singleRun: false,
 		configFile: `${__dirname}/${path.tests}/karma.conf.js`
@@ -66,5 +66,5 @@ watchers
 gulp.task("watch:all", ["watch:ts"]);
 
 gulp.task("watch:ts", function () {
-	gulp.watch(path.src + "/**/*.ts", ["bundle:js"])
+	gulp.watch(path.src + "/**/*.ts", ["compile:ts"])
 });

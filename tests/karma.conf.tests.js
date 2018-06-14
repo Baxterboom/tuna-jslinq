@@ -648,20 +648,46 @@ describe("SelectMany", function () {
         }
         return Test;
     }());
+    var Test1 = /** @class */ (function () {
+        function Test1(name, items) {
+            this.name = name;
+            this.items = items;
+        }
+        return Test1;
+    }());
+    var Test2 = /** @class */ (function () {
+        function Test2(name, items) {
+            this.name = name;
+            this.items = items;
+        }
+        return Test2;
+    }());
+    var Test3 = /** @class */ (function () {
+        function Test3(name, items) {
+            this.name = name;
+            this.items = items;
+        }
+        return Test3;
+    }());
     var data = [
         new Test("A1", [
-            new Test("A1-1"),
-            new Test("A1-2", [
-                new Test("A1-2-1"),
+            new Test1("A1-1"),
+            new Test1("A1-2", [
+                new Test2("A1-2-1"),
             ]),
-            new Test("A1-3", [
-                new Test("A1-3-1", [new Test("A1-3-1-1")])
+            new Test1("A1-3", [
+                new Test2("A1-3-1", [new Test3("A1-3-1-1")])
             ])
         ]),
         new Test("A2")
     ];
     it("SelectMany", function () {
         expect(data.SelectMany(function (s) { return s.items; })).toEqual(data.First().items);
+    });
+    it("SelectMany", function () {
+        var result = data.SelectMany(function (s) { return s.items; }).SelectMany(function (s) { return s.items; }).SelectMany(function (s) { return s.items; });
+        expect(result.Count()).toBe(1);
+        expect(result.First().name).toEqual("A1-3-1-1");
     });
 });
 describe("SequenceEqual", function () {

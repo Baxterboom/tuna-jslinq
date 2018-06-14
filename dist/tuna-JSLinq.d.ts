@@ -154,8 +154,9 @@ interface Array<T> {
     /**
      * Select the properties for a new array
      * @param selector A function (or a function-string) that returns a new object
-     */
     SelectMany(selector: (item: T, index: number) => any[]): any[];
+     */
+    SelectMany<U>(selector: (item: T, index?: number) => U[]): U[];
     /**
      * Limits the number of entries taken
      * @param count The count of elements taken
