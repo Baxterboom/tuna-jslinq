@@ -1,6 +1,6 @@
 ﻿class JSLinqHelper {
 
-    public static NonEnumerable<T>(instance: T, name: string, value: any) {
+    public static NonEnumerable<T>(instance: T, name: keyof T, value: any) {
         Object.defineProperty(instance, name, {
             value: value,
             enumerable: false,

@@ -7,11 +7,11 @@
 
         const ordered = this;
 
-        order.Add(new JSLinqOrderEntry(JSLinqOrderEntryDirection.Descending, selector));
+        order.Add(new JSLinqOrder(JSLinqOrderDirection.Descending, selector));
 
         return ordered.sort(function (a, b) {
             for (const entry of order) {
-                const result: number = JSLinqHelper.OrderCompareFunction(entry.ValueSelector, a, b, entry.Direction === JSLinqOrderEntryDirection.Descending);
+                const result: number = JSLinqHelper.OrderCompareFunction(entry.selector, a, b, entry.direction === JSLinqOrderDirection.Descending);
                 if (result !== 0) {
                     return result;
                 }

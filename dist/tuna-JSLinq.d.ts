@@ -1,23 +1,14 @@
 declare class JSLinqHelper {
-    static NonEnumerable<T>(instance: T, name: string, value: any): void;
+    static NonEnumerable<T>(instance: T, name: keyof T, value: any): void;
     static OrderCompareFunction<T>(valueSelector: (item: T) => any, a: T, b: T, invert: boolean): number;
 }
-declare class JSLinqOrderEntry {
-    Direction: JSLinqOrderEntryDirection;
-    ValueSelector: (item: any) => any;
-    constructor(_direction: JSLinqOrderEntryDirection, _valueSelector: (item: any) => any);
-}
-declare enum JSLinqOrderEntryDirection {
-    Ascending = 0,
-    Descending = 1,
-}
-interface IArrayState {
-    Order: JSLinqOrderEntry[];
+interface IArrayState<T> {
+    Order: JSLinqOrder<T>[];
 }
 interface Array<T> {
-    _JSLinq: IArrayState;
+    _JSLinq: IArrayState<T>;
 }
-declare const JSLinq: <T = any>(array?: T | T[] | undefined) => T[];
+declare const JSLinq: <T = any>(array?: T | T[] | undefined) => T | T[];
 interface Array<T> {
     /**
      * Removes all items in the array
@@ -61,7 +52,7 @@ interface Array<T> {
      * Removes objects from the array
      * @param selector A selector-function to define a property to indentify object in array
      */
-    RemoveAll(selector?: (item: T, index: number) => any): T[];
+    RemoveAll(selector?: (item: T, index: number) => boolean | any): T[];
     /**
      * Removes an entry at a specific position
      * @param object The object to insert
@@ -150,7 +141,7 @@ interface Array<T> {
      * Select the properties for a new array
      * @param selector A function (or a function-string) that returns a new object
      */
-    Select(selector: (item: T, index: number) => any): any[];
+    Select<U>(selector: (item: T, index: number) => U): U[];
     /**
      * Select the properties for a new array
      * @param selector A function (or a function-string) that returns a new object
@@ -175,37 +166,39 @@ interface Array<T> {
      * Orders array by property or value in ascending direction
      * @param selector The selector-function that selects the property for sorting
      */
-    OrderBy(selector: (item: T) => any): T[];
+    OrderBy<U>(selector: (item: T) => U): T[];
     /**
      * Orders array by additional properties in ascending direction in combination with OrderBy/OrderByDescending
      * @param selector The selector-function that selects the property for sorting
      */
-    ThenBy(selector: (item: T) => any): T[];
+    ThenBy<U>(selector: (item: T) => U): T[];
     /**
      * Orders array by property or value in descending direction
      * @param selector The selector-function that selects the property for sorting
      */
-    OrderByDescending(selector: (item: T) => any): T[];
+    OrderByDescending<U>(selector: (item: T) => U): T[];
     /**
      * Orders array by additional properties in descending direction in combination with OrderBy/OrderByDescending
      * @param selector The selector-function that selects the property for sorting
      */
-    ThenByDescending(selector: (item: T) => any): T[];
+    ThenByDescending<U>(selector: (item: T) => U): T[];
     /**
      * Returns the smallest element in array
      * @param selector The selector-function that selects the property for comparison
      */
-    Min(selector?: (item: T) => any): T | null;
+    Min<U>(selector?: (item: T) => U): T | null;
     /**
      * Returns the greates element in array
      * @param selector The selector-function that selects the property for comparison
      */
-    Max(selector?: (item: T) => any): T | null;
+    Max<U>(selector?: (item: T) => U): T | null;
     /**
      * Groups array by property
      * @param selector The selector-function that selects the property for grouping
      */
-    GroupBy(selector?: (item: T) => any): any;
+    GroupBy<R>(selector?: (item: T) => R): {
+        [name: string]: R[];
+    };
     /**
      * Moves an item from one index to another
      * @param oldIndex The current position of the item
@@ -216,7 +209,7 @@ interface Array<T> {
      * Makes all values unique
      * @param selector A selector-function to select property for comparison and distinction
      */
-    Distinct(selector?: (item: T) => any): T[];
+    Distinct<U>(selector?: (item: T) => U): T[];
     /**
      * Tests if array contains specific object
      * @param item The object to test for
@@ -237,13 +230,13 @@ interface Array<T> {
      * @param character The character for joining
      * @param selector A selector-function to select property for joining
      */
-    Join(character: string, selector?: (item: T) => any): string;
+    Join<U>(character: string, selector?: (item: T) => U): string;
     /**
      * Combines the entries using a custom function
      * @param method A function for aggregation
      * @param startVal The value to start aggregation
      */
-    Aggregate<U>(accumulator: (accum: U, value: T, index: number, array: T[]) => any, initialValue?: U): any;
+    Aggregate<U, R>(accumulator: (accum: U, value: T, index: number, array: T[]) => R, initialValue?: U): R;
     /**
      * Reverses the array
      */
@@ -269,7 +262,7 @@ interface Array<T> {
      * @param array The array to combine
      * @param result The function to combine elements
      */
-    Zip<T, X>(array: X[], result: (first: T, second: X) => any): any[];
+    Zip<U, R>(array: U[], result: (first: T, second: U) => R): R[];
     /**
      * Combines two arrays without duplicates
      * @param array The array to combine
@@ -280,5 +273,16 @@ interface Array<T> {
      * @param keySelector The selector-function to select property for key
      * @param valueSelector A selector-function to select property for value
      */
-    ToDictionary(keySelector: (item: T) => any, valueSelector?: (item: T) => any): any;
+    ToDictionary<U, R>(keySelector: (item: T) => U, valueSelector?: (item: T) => R): {
+        [key: string]: R[];
+    };
+}
+declare enum JSLinqOrderDirection {
+    Ascending = 0,
+    Descending = 1
+}
+declare class JSLinqOrder<T> {
+    readonly direction: JSLinqOrderDirection;
+    readonly selector: (item: T) => any;
+    constructor(direction: JSLinqOrderDirection, selector: (item: T) => any);
 }

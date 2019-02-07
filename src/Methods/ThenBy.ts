@@ -7,14 +7,12 @@
 
         const ordered = this;
 
-        order.Add(new JSLinqOrderEntry(JSLinqOrderEntryDirection.Ascending, selector));
+        order.Add(new JSLinqOrder(JSLinqOrderDirection.Ascending, selector));
 
         return ordered.sort(function (a, b) {
             for (const entry of order) {
-                const result: number = JSLinqHelper.OrderCompareFunction(entry.ValueSelector, a, b, entry.Direction === JSLinqOrderEntryDirection.Descending);
-                if (result !== 0) {
-                    return result;
-                }
+                const result: number = JSLinqHelper.OrderCompareFunction(entry.selector, a, b, entry.direction === JSLinqOrderDirection.Descending);
+                if (result !== 0) return result;
             }
 
             return 0;
