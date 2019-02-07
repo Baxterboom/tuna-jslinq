@@ -1,8 +1,5 @@
 ﻿JSLinqHelper.NonEnumerable(Array.prototype, "AddRange",
     function <T>(this: T[], items: T[]): T[] {
-        items.ForEach(x => {
-            this.Add(x);
-        });
-
+        items.ForEach(f => this.push(f));
         return this;
     });

@@ -1,5 +1,5 @@
 ﻿describe("SelectMany", function () {
-   
+
     class Test {
         constructor(
             public name: string,

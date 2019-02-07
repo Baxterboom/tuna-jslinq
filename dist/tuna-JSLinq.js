@@ -94,18 +94,6 @@ var JSLinqHelper = /** @class */ (function () {
     };
     return JSLinqHelper;
 }());
-var JSLinqOrderEntry = /** @class */ (function () {
-    function JSLinqOrderEntry(_direction, _valueSelector) {
-        this.Direction = _direction;
-        this.ValueSelector = _valueSelector;
-    }
-    return JSLinqOrderEntry;
-}());
-var JSLinqOrderEntryDirection;
-(function (JSLinqOrderEntryDirection) {
-    JSLinqOrderEntryDirection[JSLinqOrderEntryDirection["Ascending"] = 0] = "Ascending";
-    JSLinqOrderEntryDirection[JSLinqOrderEntryDirection["Descending"] = 1] = "Descending";
-})(JSLinqOrderEntryDirection || (JSLinqOrderEntryDirection = {}));
 var JSLinq = function (array) {
     if (array && !Array.isArray(array)) {
         array = [array];
@@ -115,15 +103,25 @@ var JSLinq = function (array) {
 JSLinqHelper.NonEnumerable(Array.prototype, "_JSLinq", {
     Order: undefined
 });
+var JSLinqOrderDirection;
+(function (JSLinqOrderDirection) {
+    JSLinqOrderDirection[JSLinqOrderDirection["Ascending"] = 0] = "Ascending";
+    JSLinqOrderDirection[JSLinqOrderDirection["Descending"] = 1] = "Descending";
+})(JSLinqOrderDirection || (JSLinqOrderDirection = {}));
+var JSLinqOrder = /** @class */ (function () {
+    function JSLinqOrder(direction, selector) {
+        this.direction = direction;
+        this.selector = selector;
+    }
+    return JSLinqOrder;
+}());
 JSLinqHelper.NonEnumerable(Array.prototype, "Add", function (item) {
     this.push(item);
     return this;
 });
 JSLinqHelper.NonEnumerable(Array.prototype, "AddRange", function (items) {
     var _this = this;
-    items.ForEach(function (x) {
-        _this.Add(x);
-    });
+    items.ForEach(function (f) { return _this.push(f); });
     return this;
 });
 JSLinqHelper.NonEnumerable(Array.prototype, "Aggregate", function (accumulator, initialValue) {
@@ -133,7 +131,11 @@ JSLinqHelper.NonEnumerable(Array.prototype, "All", function (selector) {
     return this.Count(selector) === this.Count();
 });
 JSLinqHelper.NonEnumerable(Array.prototype, "Any", function (selector) {
-    return this.FirstOrDefault(selector) !== null;
+    if (!selector)
+        return this.length > 0;
+    var result = false;
+    this.ForEach(function (item, index) { return result = selector(item, index) === true; });
+    return result;
 });
 JSLinqHelper.NonEnumerable(Array.prototype, "Average", function (selector) {
     return this.Sum(selector) / this.Count();
@@ -152,22 +154,21 @@ JSLinqHelper.NonEnumerable(Array.prototype, "Contains", function (item) {
     return this.Any(function (a) { return a === item; });
 });
 JSLinqHelper.NonEnumerable(Array.prototype, "Count", function (selector) {
-    return selector == null
-        ? this.length
-        : this.Where(selector).length;
+    return !selector ? this.length : this.Where(selector).length;
 });
 JSLinqHelper.NonEnumerable(Array.prototype, "Distinct", function (selector) {
     var result = new Array();
     var groups = this.GroupBy(selector);
     for (var name_1 in groups) {
-        result.Add(groups[name_1][0]);
+        var items = groups[name_1];
+        if (items.Any())
+            result.Add(items[0]);
     }
     return result;
 });
 JSLinqHelper.NonEnumerable(Array.prototype, "FindIndex", function (selector) {
-    if (selector == null) {
+    if (!selector)
         throw new Error("Tuna-JSLinq: You must define a selector");
-    }
     var result = -1;
     this.ForEach(function (item, index) {
         var match = selector(item, index) === true;
@@ -179,37 +180,32 @@ JSLinqHelper.NonEnumerable(Array.prototype, "FindIndex", function (selector) {
     return result;
 });
 JSLinqHelper.NonEnumerable(Array.prototype, "FindLastIndex", function (selector) {
-    if (selector == null) {
+    if (!selector)
         throw new Error("Tuna-JSLinq: You must define a selector");
-    }
     var i = this.length;
     while (i--) {
-        if (selector(this[i], i) === true) {
+        if (selector(this[i], i) === true)
             return i;
-        }
     }
     return -1;
 });
 JSLinqHelper.NonEnumerable(Array.prototype, "First", function (selector) {
     var result = this.FirstOrDefault(selector);
-    if (result) {
+    if (result)
         return result;
-    }
     throw new Error("Tuna-JSLinq: The First Entry was not found");
 });
 JSLinqHelper.NonEnumerable(Array.prototype, "FirstOrDefault", function (selector) {
-    if (selector != null) {
-        var result_1 = null;
-        this.ForEach(function (item, index) {
-            var match = selector(item, index) === true;
-            if (match) {
-                result_1 = item;
-            }
-            return match;
-        });
-        return result_1;
-    }
-    return this.length > 0 ? this[0] : null;
+    if (!selector)
+        return this.length > 0 ? this[0] : null;
+    var result = null;
+    this.ForEach(function (item, index) {
+        var match = selector(item, index) === true;
+        if (match)
+            result = item;
+        return match;
+    });
+    return result;
 });
 JSLinqHelper.NonEnumerable(Array.prototype, "ForEach", function (action) {
     var length = this.length;
@@ -242,32 +238,29 @@ JSLinqHelper.NonEnumerable(Array.prototype, "Intersect", function (array) {
 });
 JSLinqHelper.NonEnumerable(Array.prototype, "Join", function (char, selector) {
     var result = this;
-    if (selector != null) {
+    if (selector)
         result = this.Select(selector);
-    }
     return result.join(char);
 });
 JSLinqHelper.NonEnumerable(Array.prototype, "Last", function (selector) {
     var result = this.LastOrDefault(selector);
-    if (result) {
+    if (result)
         return result;
-    }
     throw new Error("Tuna-JSLinq: The Last Entry was not found");
 });
 JSLinqHelper.NonEnumerable(Array.prototype, "LastOrDefault", function (selector) {
-    if (selector != null) {
-        var result = null;
-        var i = this.length;
-        while (i--) {
-            var item = this[i];
-            if (selector(item, i) === true) {
-                result = item;
-                break;
-            }
+    if (!selector)
+        return this.length > 0 ? this[this.length - 1] : null;
+    var result = null;
+    var i = this.length;
+    while (i--) {
+        var item = this[i];
+        if (selector(item, i) === true) {
+            result = item;
+            break;
         }
-        return result;
     }
-    return this.length > 0 ? this[this.length - 1] : null;
+    return result;
 });
 JSLinqHelper.NonEnumerable(Array.prototype, "Max", function (selector) {
     var fn = selector || function (item) { return item; };
@@ -277,20 +270,20 @@ JSLinqHelper.NonEnumerable(Array.prototype, "Min", function (selector) {
     var fn = selector || function (item) { return item; };
     return this.OrderBy(fn).FirstOrDefault();
 });
-JSLinqHelper.NonEnumerable(Array.prototype, "Move", function (oldIndex, newIndex) {
-    this.splice(newIndex, 0, this.splice(oldIndex, 1)[0]);
+JSLinqHelper.NonEnumerable(Array.prototype, "Move", function (from, to) {
+    this.splice(to, 0, this.splice(from, 1)[0]);
     return this;
 });
 JSLinqHelper.NonEnumerable(Array.prototype, "OrderBy", function (selector) {
-    var ordered = this.Clone();
-    ordered._JSLinq.Order = new Array(new JSLinqOrderEntry(JSLinqOrderEntryDirection.Ascending, selector));
-    return ordered.sort(function (a, b) {
+    var clone = this.Clone();
+    clone._JSLinq.Order = new Array(new JSLinqOrder(JSLinqOrderDirection.Ascending, selector));
+    return clone.sort(function (a, b) {
         return JSLinqHelper.OrderCompareFunction(selector, a, b, false);
     });
 });
 JSLinqHelper.NonEnumerable(Array.prototype, "OrderByDescending", function (selector) {
     var ordered = this.Clone();
-    ordered._JSLinq.Order = new Array(new JSLinqOrderEntry(JSLinqOrderEntryDirection.Descending, selector));
+    ordered._JSLinq.Order = new Array(new JSLinqOrder(JSLinqOrderDirection.Descending, selector));
     return ordered.sort(function (a, b) {
         return JSLinqHelper.OrderCompareFunction(selector, a, b, true);
     });
@@ -300,15 +293,13 @@ JSLinqHelper.NonEnumerable(Array.prototype, "Range", function (start, length) {
 });
 JSLinqHelper.NonEnumerable(Array.prototype, "Remove", function (item) {
     var index = this.indexOf(item);
-    if (index > -1) {
+    if (index > -1)
         this.RemoveAt(index);
-    }
     return this;
 });
 JSLinqHelper.NonEnumerable(Array.prototype, "RemoveAll", function (selector) {
-    if (selector == null) {
+    if (!selector)
         return this.Clear();
-    }
     var i = this.length;
     while (i--) {
         var item = this[i];
@@ -408,14 +399,13 @@ JSLinqHelper.NonEnumerable(Array.prototype, "ThenBy", function (selector) {
         throw new Error("Tuna-JSLinq: Please call OrderBy or OrderByDescending before ThenBy");
     }
     var ordered = this;
-    order.Add(new JSLinqOrderEntry(JSLinqOrderEntryDirection.Ascending, selector));
+    order.Add(new JSLinqOrder(JSLinqOrderDirection.Ascending, selector));
     return ordered.sort(function (a, b) {
         for (var _i = 0, order_1 = order; _i < order_1.length; _i++) {
             var entry = order_1[_i];
-            var result = JSLinqHelper.OrderCompareFunction(entry.ValueSelector, a, b, entry.Direction === JSLinqOrderEntryDirection.Descending);
-            if (result !== 0) {
+            var result = JSLinqHelper.OrderCompareFunction(entry.selector, a, b, entry.direction === JSLinqOrderDirection.Descending);
+            if (result !== 0)
                 return result;
-            }
         }
         return 0;
     });
@@ -426,11 +416,11 @@ JSLinqHelper.NonEnumerable(Array.prototype, "ThenByDescending", function (select
         throw new Error("Tuna-JSLinq: Please call OrderBy or OrderByDescending before ThenByDescending");
     }
     var ordered = this;
-    order.Add(new JSLinqOrderEntry(JSLinqOrderEntryDirection.Descending, selector));
+    order.Add(new JSLinqOrder(JSLinqOrderDirection.Descending, selector));
     return ordered.sort(function (a, b) {
         for (var _i = 0, order_2 = order; _i < order_2.length; _i++) {
             var entry = order_2[_i];
-            var result = JSLinqHelper.OrderCompareFunction(entry.ValueSelector, a, b, entry.Direction === JSLinqOrderEntryDirection.Descending);
+            var result = JSLinqHelper.OrderCompareFunction(entry.selector, a, b, entry.direction === JSLinqOrderDirection.Descending);
             if (result !== 0) {
                 return result;
             }
@@ -451,9 +441,8 @@ JSLinqHelper.NonEnumerable(Array.prototype, "Union", function (array) {
     return this.Concat(array).Distinct();
 });
 JSLinqHelper.NonEnumerable(Array.prototype, "Where", function (selector) {
-    if (selector == null) {
+    if (!selector)
         throw new Error("Tuna-JSLinq: You must define a selector");
-    }
     var result = new Array();
     this.ForEach(function (item, index) {
         if (selector(item, index) === true) {

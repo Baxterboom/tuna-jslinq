@@ -122,6 +122,12 @@ describe("Any", function () {
     it("empty", function () {
         expect([].Any()).toBe(false);
     });
+    it("null", function () {
+        expect([null].Any()).toBe(true);
+    });
+    it("null with selector", function () {
+        expect([null].Any(function (a) { return true; })).toBe(true);
+    });
     it("age > 70", function () {
         expect(Users.Any(function (x) { return x.Age > 70; })).toBe(true);
     });
@@ -209,6 +215,12 @@ describe("Distinct", function () {
     });
     it("booleans", function () {
         expect(Booleans.AddRange(Booleans).Distinct().Count()).toBe(2);
+    });
+    it("should not add null for empty array", function () {
+        expect(Booleans.AddRange(Booleans.Concat([])).Distinct().Count()).toBe(2);
+    });
+    it("should add null for array with null value", function () {
+        expect(Booleans.AddRange(Booleans.Concat([null])).Distinct().Count()).toBe(3);
     });
 });
 describe("FindIndex", function () {
@@ -336,14 +348,6 @@ describe("Intersect", function () {
         expect(result.length).toBe(0);
     });
 });
-describe("Join", function () {
-    it("joins", function () {
-        expect([1, 11, 111].Join("#")).toBe("1#11#111");
-    });
-    it("joins with selector", function () {
-        expect(Users.Join("#", function (i) { return i.Id; })).toBe("1#2#3#4#5#6#7#8#9#10#11#12#13#14#15#16");
-    });
-});
 describe("JSLinq", function () {
     it("should return empty array", function () {
         expect(JSLinq()).toEqual([]);
@@ -357,6 +361,14 @@ describe("JSLinq", function () {
     it("should return array", function () {
         var array = [1, 3, 4];
         expect(JSLinq(array)).toBe(array);
+    });
+});
+describe("Join", function () {
+    it("joins", function () {
+        expect([1, 11, 111].Join("#")).toBe("1#11#111");
+    });
+    it("joins with selector", function () {
+        expect(Users.Join("#", function (i) { return i.Id; })).toBe("1#2#3#4#5#6#7#8#9#10#11#12#13#14#15#16");
     });
 });
 describe("Last", function () {

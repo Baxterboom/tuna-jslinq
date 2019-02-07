@@ -3,8 +3,16 @@ describe("Any", function () {
         expect(Users.Any()).toBe(true);
     });
 
-     it("empty", function () {
+    it("empty", function () {
         expect([].Any()).toBe(false);
+    });
+
+    it("null", function () {
+        expect([null].Any()).toBe(true);
+    });
+
+    it("null with selector", function () {
+        expect([null].Any(a => true)).toBe(true);
     });
 
     it("age > 70", function () {

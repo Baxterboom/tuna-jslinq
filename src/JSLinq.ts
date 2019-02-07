@@ -1,9 +1,9 @@
-interface IArrayState {
-    Order: JSLinqOrderEntry[];
+interface IArrayState<T> {
+    Order: JSLinqOrder<T>[];
 }
 
 interface Array<T> {
-    _JSLinq: IArrayState;
+    _JSLinq: IArrayState<T>;
 }
 
 const JSLinq = <T=any>(array?: T | T[]) => {
