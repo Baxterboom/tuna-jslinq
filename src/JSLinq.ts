@@ -6,11 +6,11 @@ interface Array<T> {
     _JSLinq: IArrayState<T>;
 }
 
-const JSLinq = <T=any>(array?: T | T[]) => {
+const JSLinq = <T = any>(array?: T | T[]) => {
     if (array && !Array.isArray(array)) {
         array = [array];
     }
-    return array || [];
+    return (array || []) as T[];
 };
 
 JSLinqHelper.NonEnumerable(Array.prototype, "_JSLinq", {

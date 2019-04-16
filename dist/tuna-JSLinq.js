@@ -98,7 +98,7 @@ var JSLinq = function (array) {
     if (array && !Array.isArray(array)) {
         array = [array];
     }
-    return array || [];
+    return (array || []);
 };
 JSLinqHelper.NonEnumerable(Array.prototype, "_JSLinq", {
     Order: undefined

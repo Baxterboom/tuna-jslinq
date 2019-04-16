@@ -8,7 +8,7 @@ interface IArrayState<T> {
 interface Array<T> {
     _JSLinq: IArrayState<T>;
 }
-declare const JSLinq: <T = any>(array?: T | T[] | undefined) => T | T[];
+declare const JSLinq: <T = any>(array?: T | T[] | undefined) => T[];
 interface Array<T> {
     /**
      * Removes all items in the array

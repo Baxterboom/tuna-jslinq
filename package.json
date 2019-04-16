@@ -1,6 +1,6 @@
 {
   "name": "tuna-jslinq",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Linq methods for JavaScript/TypeScript for working with Arrays",
   "main": "dist/Tuna-JSLinq.js",
   "typings": "dist/Tuna-JSLinq.d.ts",
