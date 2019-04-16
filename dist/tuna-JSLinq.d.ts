@@ -116,7 +116,7 @@ interface Array<T> {
      * Returns the first item of the array - returns `null` if no suitable item was found
      * @param selector If set the function returns the first item that matches the selector
      */
-    FirstOrDefault(selector?: (item: T, index: number) => boolean): T | null;
+    FirstOrDefault(selector?: (item: T, index: number) => boolean): T;
     /**
      * Returns the only item of the array - Throws an exception if not exactly one item is in array
      * @param selector If set the function returns the only item that matches the selector
@@ -126,7 +126,7 @@ interface Array<T> {
      * Returns the only item of the array - Throws an exception if not only one item is in array
      * @param selector If set the function returns the only item that matches the selector
      */
-    SingleOrDefault(selector?: (item: T, index: number) => boolean): T | null;
+    SingleOrDefault(selector?: (item: T, index: number) => boolean): T;
     /**
      * Returns the last item of the array - Throws an exception if no item was found
      * @param selector If set the function returns the last item that matches the selector
@@ -136,7 +136,7 @@ interface Array<T> {
      * Returns the last item of the array - returns `null` if no suitable item was found
      * @param selector If set the function returns the last item that matches the selector
      */
-    LastOrDefault(selector?: (item: T, index: number) => boolean): T | null;
+    LastOrDefault(selector?: (item: T, index: number) => boolean): T;
     /**
      * Select the properties for a new array
      * @param selector A function (or a function-string) that returns a new object
@@ -186,18 +186,18 @@ interface Array<T> {
      * Returns the smallest element in array
      * @param selector The selector-function that selects the property for comparison
      */
-    Min<U>(selector?: (item: T) => U): T | null;
+    Min<U>(selector?: (item: T) => U): T;
     /**
      * Returns the greates element in array
      * @param selector The selector-function that selects the property for comparison
      */
-    Max<U>(selector?: (item: T) => U): T | null;
+    Max<U>(selector?: (item: T) => U): T;
     /**
      * Groups array by property
      * @param selector The selector-function that selects the property for grouping
      */
-    GroupBy<R>(selector?: (item: T) => R): {
-        [name: string]: R[];
+    GroupBy<U>(selector?: (item: T) => U): {
+        [name: string]: T[];
     };
     /**
      * Moves an item from one index to another
