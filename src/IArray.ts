@@ -161,7 +161,7 @@
      * Select the properties for a new array
      * @param selector A function (or a function-string) that returns a new object
      */
-    SelectMany<U>(selector: (item: T, index?: number) => U[]): U[];
+    SelectMany<U>(selector: (item: T, index: number) => U[]): U[];
 
     /**
      * Limits the number of entries taken

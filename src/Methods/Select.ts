@@ -1,9 +1,9 @@
 ﻿JSLinqHelper.NonEnumerable(Array.prototype, "Select",
-    function <T>(this: T[], selector: (item: T, index?: number) => any): any[] {
+    function <T>(this: T[], selector: (item: T, index: number) => any): any[] {
         const result = new Array<any>();
 
-        this.ForEach(f => {
-            const item = selector(f);
+        this.ForEach((f, i) => {
+            const item = selector(f, i);
             result.Add(item);
         });
 

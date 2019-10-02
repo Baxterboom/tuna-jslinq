@@ -1,5 +1,5 @@
 ﻿JSLinqHelper.NonEnumerable(Array.prototype, "First",
-    function <T>(this: T[], selector?: (item: T, index?: number) => boolean): T {
+    function <T>(this: T[], selector?: (item: T, index: number) => boolean): T {
         const result = this.FirstOrDefault(selector);
         if (result) return result;
 

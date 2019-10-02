@@ -1,5 +1,5 @@
 JSLinqHelper.NonEnumerable(Array.prototype, "Single",
-    function <T>(this: T[], selector?: (item: T, index?: number) => boolean): T {
+    function <T>(this: T[], selector?: (item: T, index: number) => boolean): T {
         const result = selector ? this.Where(selector) : this;
 
         if (result.Count() !== 1) {

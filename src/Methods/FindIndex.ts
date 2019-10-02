@@ -1,5 +1,5 @@
 ﻿JSLinqHelper.NonEnumerable(Array.prototype, "FindIndex",
-    function <T>(this: T[], selector: (item: T, index?: number) => boolean): number {
+    function <T>(this: T[], selector: (item: T, index: number) => boolean): number {
         if (!selector) throw new Error("Tuna-JSLinq: You must define a selector");
 
         let result = -1;
