@@ -1,5 +1,5 @@
 "use strict";
-var JSLinqHelper = /** @class */ (function () {
+var JSLinqHelper = (function () {
     function JSLinqHelper() {
     }
     JSLinqHelper.NonEnumerable = function (instance, name, value) {
@@ -9,36 +9,6 @@ var JSLinqHelper = /** @class */ (function () {
             configurable: true
         });
     };
-    // public static OrderCompareFunction<T>(selector: (item: T) => any, left: T, right: T, invert: boolean): number {
-    //     if (left === right) { return 0; }
-    //     const charMatcher = /(\d+)|(\D+)/gi;
-    //     let l = selector(left);
-    //     l = l == null ? "" : l.toString();
-    //     let r = selector(right);
-    //     r = r == null ? "" : r.toString();
-    //     const a1 = l.match(charMatcher) || [];
-    //     const a2 = r.match(charMatcher) || [];
-    //     while (a1.length && a2.length) {
-    //         let v1 = a1.shift() as any;
-    //         let v2 = a2.shift() as any;
-    //         if (invert) {
-    //             v2 = [v1, v1 = v2].First();
-    //         }
-    //         const d1 = !isNaN(v1);
-    //         const d2 = !isNaN(v2);
-    //         if (d1 || d2) {
-    //             if (!d1) { return 1; }
-    //             if (!d2) { return -1; }
-    //             if (v1 !== v2) {
-    //                 return v1 - v2 || v1.length - v2.length; // lenght checks, handles scenarios where '02' compares to '2'
-    //             }
-    //         }
-    //         if (v1 !== v2) {
-    //             return v1 > v2 ? 1 : -1;
-    //         }
-    //     }
-    //     return a1.length - a2.length;
-    // }
     JSLinqHelper.OrderCompareFunction = function (valueSelector, a, b, invert) {
         var value_a = valueSelector(a);
         var value_b = valueSelector(b);
@@ -108,7 +78,7 @@ var JSLinqOrderDirection;
     JSLinqOrderDirection[JSLinqOrderDirection["Ascending"] = 0] = "Ascending";
     JSLinqOrderDirection[JSLinqOrderDirection["Descending"] = 1] = "Descending";
 })(JSLinqOrderDirection || (JSLinqOrderDirection = {}));
-var JSLinqOrder = /** @class */ (function () {
+var JSLinqOrder = (function () {
     function JSLinqOrder(direction, selector) {
         this.direction = direction;
         this.selector = selector;
@@ -350,7 +320,6 @@ JSLinqHelper.NonEnumerable(Array.prototype, "SequenceEqual", function (array) {
     if (this.length !== array.length) {
         return false;
     }
-    // return this.All(item => array.Contains(item));
     for (var i = 0; i < this.length; i++) {
         var left = this[i];
         var right = array[i];

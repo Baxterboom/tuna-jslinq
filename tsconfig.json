@@ -3,7 +3,8 @@
         "strict": true,
         "target": "es5",
         "outFile": "./dist/tuna-jslinq.js",
-        "declaration": true
+        "declaration": true,
+        "removeComments": true
     },
     "files": [
         "./src/JSLinqHelper.ts",

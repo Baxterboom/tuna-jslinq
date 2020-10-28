@@ -1,3 +1,3 @@
 cls
 @echo off
-call gulp
+call npx gulp
