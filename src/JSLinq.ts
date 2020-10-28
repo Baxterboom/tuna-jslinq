@@ -13,6 +13,6 @@ const JSLinq = <T = any>(array?: T | T[]) => {
     return (array || []) as T[];
 };
 
-JSLinqHelper.NonEnumerable(Array.prototype, "_JSLinq", {
+JSLinqHelper.NonEnumerable("_JSLinq", {
     Order: undefined
 });

@@ -1,4 +1,4 @@
-﻿JSLinqHelper.NonEnumerable(Array.prototype, "ThenBy",
+﻿JSLinqHelper.NonEnumerable("ThenBy",
     function <T>(this: T[], selector: (item: T) => any): T[] {
         const order = this._JSLinq.Order;
         if (order == null || !order.Any()) {

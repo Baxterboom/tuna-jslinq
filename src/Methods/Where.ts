@@ -1,4 +1,4 @@
-﻿JSLinqHelper.NonEnumerable(Array.prototype, "Where",
+﻿JSLinqHelper.NonEnumerable("Where",
     function <T>(this: T[], selector: (item: T, index: number) => boolean): T[] {
         if (!selector) throw new Error("Tuna-JSLinq: You must define a selector");
 

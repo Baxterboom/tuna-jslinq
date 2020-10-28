@@ -1,4 +1,4 @@
-﻿JSLinqHelper.NonEnumerable(Array.prototype, "Remove",
+﻿JSLinqHelper.NonEnumerable("Remove",
     function <T>(this: T[], item: T): T[] {
         const index = this.indexOf(item);
         if (index > -1) this.RemoveAt(index);

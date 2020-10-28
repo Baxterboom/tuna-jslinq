@@ -1,4 +1,4 @@
-JSLinqHelper.NonEnumerable(Array.prototype, "Zip",
+JSLinqHelper.NonEnumerable("Zip",
     function <T, X>(this: T[], array: X[], selector: (first: T, second: X) => any): any[] {
         const result = new Array<any>();
 

@@ -1,4 +1,4 @@
-﻿JSLinqHelper.NonEnumerable(Array.prototype, "Distinct",
+﻿JSLinqHelper.NonEnumerable("Distinct",
     function <T>(this: T[], selector?: (item: T) => T): T[] {
         const result = new Array<T>();
         const groups = this.GroupBy(selector);

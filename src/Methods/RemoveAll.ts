@@ -1,4 +1,4 @@
-﻿JSLinqHelper.NonEnumerable(Array.prototype, "RemoveAll",
+﻿JSLinqHelper.NonEnumerable("RemoveAll",
     function <T>(this: T[], selector?: (item: T, index: number) => boolean): T[] {
         if (!selector) return this.Clear();
 
